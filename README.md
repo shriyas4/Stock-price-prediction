@@ -21,3 +21,5 @@ Important formulae regarding Financial Accounting Foundations:
 7. Number of day's sales in inventory = Inventory/ Average daily cost of sales
 8. Average Collection period = Accounts recievable/ Average daily sales
 9. PE Ratio = Price/ Earnings
+
+Source: Linkedin Course: Financial Accounting foundations 
