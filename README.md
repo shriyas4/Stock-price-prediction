@@ -9,3 +9,9 @@ Timeline: Date the project was started: 29/03/2023
        
           
 About the Project Topic: 
+
+Important formulae regarding Financial Accounting Foundations: 
+
+1. Assets = Liability + Equity
+
+2. 
