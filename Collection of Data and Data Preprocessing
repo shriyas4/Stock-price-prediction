@@ -1,0 +1,66 @@
+Collection of Data and Data Preprocessing
+
+I chose the dataset from Yahoo Finance, feel free to do the same if you need.
+
+#import the required libraries
+import pandas as pd
+import numpy as np
+import matplotlib as mp
+import sklearn as sl
+from sklearn.preprocessing import StandardScaler
+from sklearn.decomposition import PCA
+from sklearn.model_selection import train_test_split
+
+#import the file you downloaded
+df = pd.read_csv('AAPL.csv')
+
+#check if the file has been uploaded properly
+print(df.head())
+
+#find if there is any missing value in the data
+if df.isnull().any().any():
+    print('Yes, there are missing values')
+else:
+    print('No, there are no missing values')
+    
+#find if there are any duplicate values
+if df.duplicated().any().any():
+    print('Yes, there are duplicate values')
+else:
+    print('No, there are no duplicate values')
+    
+#find the categorical variables so that they can be encoded.
+categorical_vars = df.dtypes[df.dtypes == 'object'].index
+print(df.columns)
+
+#change the values 
+df = pd.get_dummies(df, columns=categorical_vars)
+print(df.columns)
+
+#The StandardScaler class in scikit-learn standardizes features by removing the mean and scaling to unit variance. 
+#The result is a transformed feature where the mean is 0 and the standard deviation is 1. 
+#This is a common preprocessing step in machine learning to avoid any bias towards features with larger values.
+
+scaler = StandardScaler()
+numerical_vars = list(df.select_dtypes(include=['float64', 'int64']).columns)
+df[numerical_vars] = scaler.fit_transform(df[numerical_vars])
+print(numerical_vars)
+
+# Define the number of components for PCA
+n_components = 2
+
+# Instantiate the PCA object with the number of components
+pca = PCA(n_components=n_components)
+
+# Apply PCA to the numerical features of the DataFrame
+df_pca = pca.fit_transform(df[numerical_vars])
+print(df_pca)
+
+#This splits your DataFrame into X_train (the training features), X_test (the testing features), y_train (the training target), and y_test (the testing target) with a 80:20 ratio.
+
+df['target'] = df['Close'].shift(-1)
+X_train, X_test, y_train, y_test = train_test_split(df.drop('target', axis=1), df['target'], test_size=0.2)
+
+print(X_train, X_test, y_train, y_test)
+
+#this is end of data preprocessing
