@@ -64,3 +64,57 @@ X_train, X_test, y_train, y_test = train_test_split(df.drop('target', axis=1), d
 print(X_train, X_test, y_train, y_test)
 
 #this is end of data preprocessing
+
+
+#This is the model selection and model training
+
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import tensorflow as tf
+from sklearn.preprocessing import StandardScaler
+from sklearn.model_selection import train_test_split
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import LSTM, Dense
+
+df = pd.read_csv('AAPL.csv')
+
+# Drop unnecessary columns
+df = df.drop(['Date', 'Adj Close'], axis=1)
+
+# Normalize the data
+scaler = StandardScaler()
+df_scaled = scaler.fit_transform(df)
+
+# Split the data into features and target
+X = df_scaled[:, :-1]
+y = df_scaled[:, -1]
+
+# Split the data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
+
+# Reshape the input data to 3D shape [samples, timesteps, features]
+timesteps = 1  # Each sample represents one time step
+X_train = X_train.reshape((X_train.shape[0], timesteps, X_train.shape[1]))
+X_test = X_test.reshape((X_test.shape[0], timesteps, X_test.shape[1]))
+
+model = Sequential()
+model.add(LSTM(64, activation='relu', input_shape=(timesteps, X_train.shape[2])))
+model.add(Dense(1))
+model.compile(optimizer='adam', loss='mse')
+
+history = model.fit(X_train, y_train, epochs=10, batch_size=32, validation_data=(X_test, y_test))
+
+loss = model.evaluate(X_test, y_test)
+print("Test Loss:", loss)
+
+plt.plot(history.history['loss'], label='Training Loss')
+plt.plot(history.history['val_loss'], label='Validation Loss')
+plt.xlabel('Epochs')
+plt.ylabel('Loss')
+plt.legend()
+plt.show()
+
+#end of model training
+
+
