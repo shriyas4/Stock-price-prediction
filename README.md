@@ -23,16 +23,7 @@ Important formulae regarding Financial Accounting Foundations:
 Source: Linkedin Course: Financial Accounting foundations 
 
 
-LSTM Model
-Memory Cell: LSTM uses a memory cell to store and process information over time. The memory cell has a self-loop that allows it to maintain its state and selectively update it using input and output gates.
 
-Input gate: An input gate is used to regulate the amount of new information that is fed into the memory cell. It is controlled by a sigmoid function, which decides which parts of the input to let in.
-
-Forget gate: The forget gate is used to selectively remove information from the memory cell. It is controlled by another sigmoid function, which decides which parts of the memory cell to forget.
-
-Output gate: The output gate regulates the amount of information that is output from the memory cell. It is controlled by a third sigmoid function, which decides which parts of the memory cell to use in the output.
-
-Backpropagation through time: LSTM uses backpropagation through time (BPTT) to learn from sequential data. This involves calculating the gradient of the loss function with respect to the parameters of the model at each time step and propagating it back through time to update the model parameters.
 
 Vanishing gradient problem: LSTM is designed to address the vanishing gradient problem, which can occur in deep learning models that use recurrent connections. The problem arises when the gradient signal becomes too small to be useful for learning, causing the model to converge slowly or not at all. LSTM uses gates to control the flow of information, which helps to prevent the gradient signal from vanishing or exploding.
 
