@@ -1,0 +1,12 @@
+from sklearn.model_selection import train_test_split
+
+# Split the dataset into train and test (90% train, 10% test)
+train_df, test_df = train_test_split(df, test_size=0.1, random_state=42)
+
+# Split the train dataset into train and validation (80% train, 10% validation)
+train_df, val_df = train_test_split(train_df, test_size=0.1, random_state=42)
+
+# Print the sizes of the resulting datasets
+print("Training set size:", len(train_df))
+print("Validation set size:", len(val_df))
+print("Testing set size:", len(test_df))
