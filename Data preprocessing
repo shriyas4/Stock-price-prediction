@@ -1,0 +1,47 @@
+# Check for missing values
+print(df.isnull().sum())
+
+# Option 1: Drop rows with missing values
+df.dropna(inplace=True)
+
+import numpy as np
+
+# Calculate z-scores for a numerical column
+column_name = 'Close'  # Replace with the desired column name
+z_scores = np.abs((df[column_name] - df[column_name].mean()) / df[column_name].std())
+
+# Remove rows with z-scores above a certain threshold (e.g., 3)
+df = df[z_scores < 3]
+
+from sklearn.preprocessing import MinMaxScaler
+
+# Create a MinMaxScaler object
+scaler = MinMaxScaler()
+
+# Normalize a numerical column to the range [0, 1]
+df['Close'] = scaler.fit_transform(df[['Close']])
+
+# Option 1: One-Hot Encoding
+encoded_df = pd.get_dummies(df, columns=['Date'])
+
+# Option 2: Label Encoding
+from sklearn.preprocessing import LabelEncoder
+label_encoder = LabelEncoder()
+df['encoded_column'] = label_encoder.fit_transform(df['Date'])
+
+from sklearn.preprocessing import StandardScaler
+
+# Create a StandardScaler object
+scaler = StandardScaler()
+
+# Scale numerical columns
+df[['Open', 'High']] = scaler.fit_transform(df[['Open', 'High']])
+
+# Convert a column to datetime format
+df['Date'] = pd.to_datetime(df['Date'])
+
+# Extract date features
+df['year'] = df['Date'].dt.year
+df['month'] = df['Date'].dt.month
+df['day'] = df['Date'].dt.day
+
