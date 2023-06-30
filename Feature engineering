@@ -1,0 +1,55 @@
+import pandas as pd
+
+# Calculate the moving average for a specific window size (e.g., 5 days)
+df['MA_5'] = df['Close'].rolling(window=5).mean()
+
+# Define a function to calculate the relative strength index (RSI)
+def calculate_rsi(close_prices, window=14):
+    # Calculate the price changes
+    delta = close_prices.diff()
+
+    # Get the upward and downward price changes
+    up = delta.where(delta > 0, 0)
+    down = -delta.where(delta < 0, 0)
+
+    # Calculate the average gains and losses
+    avg_gain = up.rolling(window).mean()
+    avg_loss = down.rolling(window).mean()
+
+    # Calculate the relative strength (RS) and the relative strength index (RSI)
+    rs = avg_gain / avg_loss
+    rsi = 100 - (100 / (1 + rs))
+
+    return rsi
+
+# Calculate the relative strength index (RSI) using the defined function
+df['RSI'] = calculate_rsi(df['Close'], window=14)
+
+# Create lagged variables for the closing price
+df['Close_Lag1'] = df['Close'].shift(1)  # Lagged by 1 day
+df['Close_Lag7'] = df['Close'].shift(7)  # Lagged by 1 week
+
+# Extract date features from the 'Date' column
+df['Year'] = df['Date'].dt.year
+df['Month'] = df['Date'].dt.month
+df['Day'] = df['Date'].dt.day
+df['Weekday'] = df['Date'].dt.weekday
+
+def calculate_atr(high_prices, low_prices, close_prices, window=14):
+    # Calculate the True Range (TR)
+    tr1 = high_prices - low_prices
+    tr2 = abs(high_prices - close_prices.shift())
+    tr3 = abs(low_prices - close_prices.shift())
+    true_range = pd.concat([tr1, tr2, tr3], axis=1).max(axis=1)
+
+    # Calculate the Average True Range (ATR)
+    atr = true_range.rolling(window).mean()
+
+    return atr
+
+# Calculate the average true range (ATR) using the defined function
+df['ATR'] = calculate_atr(df['High'], df['Low'], df['Close'], window=14)
+
+# Calculate the moving average of volume for a specific window size (e.g., 10 days)
+df['Volume_MA_10'] = df['Volume'].rolling(window=10).mean()
+
