@@ -1,0 +1,47 @@
+import pandas as pd
+
+# Assuming your dataset is in a CSV file named "mzn_data.csv"
+df = pd.read_csv('AMZN.csv')
+
+# Number of rows and columns
+print("Number of rows:", df.shape[0])
+print("Number of columns:", df.shape[1])
+
+# Display the first few rows of the dataset
+print(df.head())
+
+# Summary statistics for numerical variables
+print(df.describe())
+
+# Display the data types of each column
+print(df.dtypes)
+
+# Count the number of missing values in each column
+print(df.isnull().sum())
+
+import matplotlib.pyplot as plt
+
+# Box plot to identify outliers in a numerical variable 'price'
+plt.boxplot(df['Close'])
+plt.title('Box plot of price')
+plt.show()
+
+import matplotlib.pyplot as plt
+
+# Histogram of the 'price' variable
+plt.hist(df['Close'], bins=20)
+plt.xlabel('Price')
+plt.ylabel('Frequency')
+plt.title('Distribution of Price')
+plt.show()
+
+# Calculate correlation matrix
+corr_matrix = df.corr()
+
+# Heatmap of the correlation matrix
+import seaborn as sns
+plt.figure(figsize=(10, 8))
+sns.heatmap(corr_matrix, annot=True, cmap='coolwarm')
+plt.title('Correlation Matrix')
+plt.show()
+
